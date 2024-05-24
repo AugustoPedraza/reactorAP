@@ -20,6 +20,8 @@ defmodule ReactorApWeb.Router do
     get "/", PageController, :home
 
     live "/foo", FooLive
+
+    live "/guess", WrongLive
   end
 
   # Other scopes may use custom stacks.
