@@ -2,7 +2,15 @@ defmodule ReactorApWeb.WrongLive do
   use ReactorApWeb, :live_view
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, winner_number: _get_new_winner_number(), score: 0, msg: "Make a guess:")}
+    {
+      :ok,
+      assign(
+        socket,
+        winner_number: _get_new_winner_number(),
+        score: 0,
+        msg: "Make a guess:"
+      )
+    }
   end
 
   def render(assigns) do
@@ -17,6 +25,10 @@ defmodule ReactorApWeb.WrongLive do
           <%= n %>
         </.link>
       <% end %>
+      <pre>
+        <%= @current_user.email %>
+        <%= @session_id %>
+      </pre>
     </h2>
     <h2>
       <%= live_patch("Reset my game", to: "#") %>
