@@ -6,7 +6,12 @@ defmodule ReactorApWeb.ProductLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :products, Catalog.list_products())}
+    socket =
+      socket
+      |> assign(:greetings, "Welcome to React AP")
+      |> stream(:products, Catalog.list_products())
+
+    {:ok, socket}
   end
 
   @impl true
