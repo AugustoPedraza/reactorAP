@@ -15,5 +15,6 @@ defmodule ReactorAp.Help.Faq do
     faq
     |> cast(attrs, [:question, :answer, :up_votes])
     |> validate_required([:question, :answer, :up_votes])
+    |> validate_number(:up_votes, greater_than_or_equal_to: 0)
   end
 end

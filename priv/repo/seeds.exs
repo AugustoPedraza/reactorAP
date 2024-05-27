@@ -10,7 +10,24 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias ReactorAp.Catalog
+alias ReactorAp.{Accounts, Catalog, Help}
+
+users = [
+  %{
+    email: "pj1@example.com",
+    password: "player1_asd123"
+  },
+  %{
+    email: "admin@example.com",
+    password: "admin_asd123"
+  }
+]
+
+Enum.map(users, fn user ->
+  {:ok, user} = Accounts.register_user(user)
+
+  user
+end)
 
 products = [
   %{
@@ -35,4 +52,39 @@ products = [
 
 Enum.each(products, fn product ->
   Catalog.create_product(product)
+end)
+
+faqs = [
+  %{
+    question: "What is the return policy?",
+    answer: "Our return policy allows for returns within 30 days of purchase with a receipt.",
+    up_votes: 15
+  },
+  %{
+    question: "How do I track my order?",
+    answer:
+      "You can track your order by logging into your account and navigating to the 'Orders' section.",
+    up_votes: 20
+  },
+  %{
+    question: "Can I change my shipping address after placing an order?",
+    answer:
+      "Yes, you can change your shipping address within 24 hours of placing the order by contacting our support team.",
+    up_votes: 10
+  },
+  %{
+    question: "What payment methods are accepted?",
+    answer: "We accept all major credit cards, PayPal, and Apple Pay.",
+    up_votes: 25
+  },
+  %{
+    question: "How do I reset my password?",
+    answer:
+      "You can reset your password by clicking on the 'Forgot Password' link on the login page and following the instructions.",
+    up_votes: 30
+  }
+]
+
+Enum.each(faqs, fn faq ->
+  Help.create_faq(faq)
 end)
