@@ -74,6 +74,26 @@ defmodule ReactorAp.Catalog do
   end
 
   @doc """
+  Markdown a product by the specified amount.
+
+  ## Examples
+
+      iex> markdown_product(product, decrease_value)
+      {:ok, %Product{}}
+
+      iex> markdown_product(product, invalid_decrease_value)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def markdown_product(%Product{} = product, decrease_value) do
+    attrs = %{unit_price: product.unit_price - decrease_value}
+
+    product
+    |> Product.unit_price_changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
   Deletes a product.
 
   ## Examples
