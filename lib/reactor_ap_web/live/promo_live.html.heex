@@ -1,0 +1,18 @@
+<.header>
+  Send your Promo Code to a Friend
+  <:subtitle> promo code for 10% off their first game purchase! </:subtitle>
+</.header>
+<div>
+  <.simple_form
+    for={@form}
+    id="promo-code-form"
+    phx-change="validate"
+    phx-submit="send"
+  >
+  <.input field={@form[:first_name]} type="text" label="First Name" />
+  <.input field={@form[:email]} type="email" label="Email" phx-debounce="blur" />
+    <:actions>
+      <.button phx-disable-with="Sending..."> Send Promo </.button>
+    </:actions>
+  </.simple_form>
+</div>
