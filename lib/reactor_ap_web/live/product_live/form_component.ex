@@ -4,6 +4,17 @@ defmodule ReactorApWeb.ProductLive.FormComponent do
   alias ReactorAp.Catalog
 
   @impl true
+  def mount(socket) do
+    {:ok,
+     allow_upload(socket, :image,
+       accept: ~w(.jpg .jpeg .png),
+       max_entries: 1,
+       max_file_size: 9_000_000,
+       auto_upload: true
+     )}
+  end
+
+  @impl true
   def render(assigns) do
     ~H"""
     <div>
@@ -15,6 +26,7 @@ defmodule ReactorApWeb.ProductLive.FormComponent do
       <.simple_form
         for={@form}
         id="product-form"
+        multipart
         phx-target={@myself}
         phx-change="validate"
         phx-submit="save"
@@ -23,10 +35,23 @@ defmodule ReactorApWeb.ProductLive.FormComponent do
         <.input field={@form[:description]} type="text" label="Description" />
         <.input field={@form[:unit_price]} type="number" label="Unit price" step="any" />
         <.input field={@form[:sku]} type="number" label="Sku" />
+        <div phx-drop-target={@uploads.image.ref}>
+          <.label>Image</.label>
+          <.live_file_input upload={@uploads.image} />
+        </div>
         <:actions>
           <.button phx-disable-with="Saving...">Save Product</.button>
         </:actions>
       </.simple_form>
+      <%= for image <- @uploads.image.entries do %>
+        <div class="mt-4">
+          <.live_img_preview entry={image} width="60" />
+        </div>
+        <progress value={image.progress} max="100" />
+        <%= for err <- upload_errors(@uploads.image, image) do %>
+          <.error><%= err %></.error>
+        <% end %>
+      <% end %>
     </div>
     """
   end
@@ -55,7 +80,9 @@ defmodule ReactorApWeb.ProductLive.FormComponent do
     save_product(socket, socket.assigns.action, product_params)
   end
 
-  defp save_product(socket, :edit, product_params) do
+  defp save_product(socket, :edit, params) do
+    product_params = params_with_image(params, socket)
+
     case Catalog.update_product(socket.assigns.product, product_params) do
       {:ok, product} ->
         notify_parent({:saved, product})
@@ -71,7 +98,10 @@ defmodule ReactorApWeb.ProductLive.FormComponent do
   end
 
   defp save_product(socket, :new, product_params) do
-    case Catalog.create_product(product_params) do
+    product_params
+    |> params_with_image(socket)
+    |> Catalog.create_product()
+    |> case do
       {:ok, product} ->
         notify_parent({:saved, product})
 
@@ -90,4 +120,21 @@ defmodule ReactorApWeb.ProductLive.FormComponent do
   end
 
   defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
+
+  defp params_with_image(params, socket) do
+    path =
+      socket
+      |> consume_uploaded_entries(:image, &upload_static_file/2)
+      |> List.first()
+
+    Map.put(params, "image_upload", path)
+  end
+
+  defp upload_static_file(%{path: path}, _entry) do
+    filename = Path.basename(path)
+    dest = Path.join("priv/static/images", filename)
+    File.cp!(path, dest)
+
+    {:ok, ~p"/images/#{filename}"}
+  end
 end

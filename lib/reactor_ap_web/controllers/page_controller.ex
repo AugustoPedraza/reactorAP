@@ -8,6 +8,6 @@ defmodule ReactorApWeb.PageController do
   end
 
   def home(conn, _params) do
-    render(conn, :home)
+    render(conn, :home, layout: false)
   end
 end
