@@ -21,6 +21,12 @@ defmodule ReactorAp.Catalog do
     Repo.all(Product)
   end
 
+  def list_products_with_user_ratings(user) do
+    user
+    |> Product.Query.with_user_ratings()
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single product.
 

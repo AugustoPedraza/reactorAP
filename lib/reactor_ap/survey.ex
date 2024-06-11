@@ -5,8 +5,7 @@ defmodule ReactorAp.Survey do
 
   import Ecto.Query, warn: false
   alias ReactorAp.Repo
-
-  alias ReactorAp.Survey.Demographic
+  alias ReactorAp.Survey.{Demographic, Rating}
 
   @doc """
   Returns the list of demographics.
@@ -36,6 +35,12 @@ defmodule ReactorAp.Survey do
 
   """
   def get_demographic!(id), do: Repo.get!(Demographic, id)
+
+  def get_demographic_by_user(user) do
+    user
+    |> Demographic.Query.for_user()
+    |> Repo.one()
+  end
 
   @doc """
   Creates a demographic.
@@ -101,8 +106,6 @@ defmodule ReactorAp.Survey do
   def change_demographic(%Demographic{} = demographic, attrs \\ %{}) do
     Demographic.changeset(demographic, attrs)
   end
-
-  alias ReactorAp.Survey.Rating
 
   @doc """
   Returns the list of ratings.
