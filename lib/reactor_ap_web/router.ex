@@ -88,6 +88,8 @@ defmodule ReactorApWeb.Router do
 
       live "/faqs/:id", FaqLive.Show, :show
       live "/faqs/:id/show/edit", FaqLive.Show, :edit
+
+      live "/survey", SurveyLive, :index
     end
   end
 
