@@ -5,5 +5,8 @@
 <%= if @demographic do %>
   <DemographicLive.Show.details demographic={@demographic} />
 <% else %>
-  <h2> Demographic Form coming soon! </h2>
+  <.live_component module={ReactorApWeb.DemographicLive.Form}
+    id="demographic-form"
+    current_user={@current_user}
+  />
 <% end %>
