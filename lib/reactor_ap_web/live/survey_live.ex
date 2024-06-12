@@ -54,7 +54,6 @@ defmodule ReactorApWeb.SurveyLive do
          product_index
        ) do
     socket
-    |> put_flash(:info, "Rating submitted successfully")
     |> assign(:products, List.replace_at(products, product_index, updated_product))
   end
 end
