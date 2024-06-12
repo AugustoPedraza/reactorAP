@@ -16,7 +16,7 @@ defmodule ReactorApWeb.DemographicLive.Form do
   end
 
   def handle_event("save", %{"demographic" => demographic_params}, socket) do
-    save_demographic(socket, demographic_params)
+    {:noreply, save_demographic(socket, demographic_params)}
   end
 
   defp assign_form(socket, %Ecto.Changeset{} = changeset) do
@@ -30,7 +30,7 @@ defmodule ReactorApWeb.DemographicLive.Form do
         socket
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign_form(socket, changeset)}
+        assign_form(socket, changeset)
     end
   end
 
