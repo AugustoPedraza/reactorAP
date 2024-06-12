@@ -2,11 +2,14 @@ defmodule ReactorApWeb.SurveyLive do
   use ReactorApWeb, :live_view
 
   alias __MODULE__.Component
-  alias ReactorAp.Survey
-  alias ReactorApWeb.DemographicLive
+  alias ReactorAp.{Catalog, Survey}
+  alias ReactorApWeb.{DemographicLive, RatingLive}
 
   def mount(_params, _session, socket) do
-    {:ok, assign_demographic(socket)}
+    {:ok,
+     socket
+     |> assign_demographic()
+     |> assign_products()}
   end
 
   defp assign_demographic(%{assigns: %{current_user: current_user}} = socket) do
@@ -14,6 +17,14 @@ defmodule ReactorApWeb.SurveyLive do
       socket,
       :demographic,
       Survey.get_demographic_by_user(current_user)
+    )
+  end
+
+  defp assign_products(%{assigns: %{current_user: current_user}} = socket) do
+    assign(
+      socket,
+      :products,
+      Catalog.list_products_with_user_ratings(current_user)
     )
   end
 
