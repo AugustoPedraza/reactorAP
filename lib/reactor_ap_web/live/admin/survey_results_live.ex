@@ -54,7 +54,7 @@ defmodule ReactorApWeb.Admin.SurveyResultsLive do
   end
 
   defp render_bar_chart(chart) do
-    Plot.new(500, 400, chart)
+    Plot.new(900, 700, chart)
     |> Plot.titles(title(), subtitle())
     |> Plot.axis_labels(x_axis(), y_axis())
     |> Plot.to_svg()

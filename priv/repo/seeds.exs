@@ -17,7 +17,7 @@ defmodule ReactorAp.SeedData do
     Enum.map(1..count, fn i ->
       attrs = %{
         email: "user#{i}@example.com",
-        password: "UserPass#{i}_12#{}"
+        password: "UserPass#{i}_12#{i}"
       }
 
       {:ok, user} = Accounts.register_user(attrs)
@@ -29,64 +29,10 @@ defmodule ReactorAp.SeedData do
   def insert_products() do
     products = [
       %{
-        name: "Chess",
-        description: "The classic strategy game",
-        sku: 5_678_910,
-        unit_price: 10.00
-      },
-      %{
-        name: "Tic-Tac-Toe",
-        description: "The game of Xs and Os",
-        sku: 11_121_314,
-        unit_price: 3.00
-      },
-      %{
-        name: "Table Tennis",
-        description: "Bat the ball back and forth. Don't miss!",
-        sku: 15_222_324,
-        unit_price: 12.00
-      },
-      %{
-        name: "Monopoly",
-        description: "Buy, sell, dream, and scheme!",
-        sku: 20_333_444,
-        unit_price: 25.00
-      },
-      %{
-        name: "Scrabble",
-        description: "Word game for the whole family",
-        sku: 25_555_666,
-        unit_price: 18.00
-      },
-      %{
-        name: "Risk",
-        description: "The game of global domination",
-        sku: 30_777_888,
-        unit_price: 20.00
-      },
-      %{
-        name: "Clue",
-        description: "Solve the mystery",
-        sku: 35_999_101,
-        unit_price: 15.00
-      },
-      %{
         name: "Catan",
         description: "Trade, build, settle",
         sku: 40_111_213,
         unit_price: 30.00
-      },
-      %{
-        name: "Uno",
-        description: "Fast-paced card game",
-        sku: 45_314_516,
-        unit_price: 6.00
-      },
-      %{
-        name: "Jenga",
-        description: "Stack and balance the blocks",
-        sku: 50_171_819,
-        unit_price: 14.00
       },
       %{
         name: "Pandemic",
