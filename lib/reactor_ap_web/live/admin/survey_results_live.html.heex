@@ -1,0 +1,7 @@
+<section class="ml-8">
+  <h2 class="font-light text-2xl">Survey Results</h2>
+  <%= for {product_name, avg} <- @products_with_average_rating do %>
+    <h3><%= product_name %></h3>
+    <span><%= avg %></span>
+  <% end %>
+</section>
