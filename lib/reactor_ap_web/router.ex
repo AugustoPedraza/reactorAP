@@ -90,6 +90,7 @@ defmodule ReactorApWeb.Router do
       live "/faqs/:id/show/edit", FaqLive.Show, :edit
 
       live "/survey", SurveyLive, :index
+      live "/admin/dashboard", Admin.DashboardLive
     end
   end
 
