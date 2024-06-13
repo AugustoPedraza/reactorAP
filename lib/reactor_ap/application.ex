@@ -17,6 +17,7 @@ defmodule ReactorAp.Application do
       # Start Finch
       {Finch, name: ReactorAp.Finch},
       # Start the Endpoint (http/https)
+      ReactorApWeb.Presence,
       ReactorApWeb.Endpoint
       # Start a worker by calling: ReactorAp.Worker.start_link(arg)
       # {ReactorAp.Worker, arg}
