@@ -4,11 +4,17 @@ defmodule ReactorApWeb.Admin.SurveyResultsLive do
 
   alias ReactorAp.Catalog
 
+  @age_group ["all", "18 and under", "18 to 25", "25 to 35", "35 and up"]
+  @genders ["all", "female", "male", "other", "prefer not to say"]
+
   def update(assigns, socket) do
     {:ok,
      socket
      |> assign(assigns)
+     |> assign_age_group_values()
+     |> assign_gender_values()
      |> assign_age_group_filter()
+     |> assign_gender_filter()
      |> assign_products_with_average_ratings()
      |> assign_dataset()
      |> assign_chart()
@@ -25,6 +31,24 @@ defmodule ReactorApWeb.Admin.SurveyResultsLive do
      |> assign_chart_svg()}
   end
 
+  def handle_event("gender_filter", %{"gender_filter" => gender_filter}, socket) do
+    {:noreply,
+     socket
+     |> assign_gender_filter(gender_filter)
+     |> assign_products_with_average_ratings()
+     |> assign_dataset()
+     |> assign_chart()
+     |> assign_chart_svg()}
+  end
+
+  defp assign_age_group_values(socket) do
+    socket |> assign(:age_group_values, @age_group)
+  end
+
+  defp assign_gender_values(socket) do
+    socket |> assign(:gender_values, @genders)
+  end
+
   defp assign_age_group_filter(socket) do
     socket |> assign(:age_group_filter, "all")
   end
@@ -33,13 +57,24 @@ defmodule ReactorApWeb.Admin.SurveyResultsLive do
     socket |> assign(:age_group_filter, age_group_filter)
   end
 
+  defp assign_gender_filter(socket) do
+    socket |> assign(:gender_filter, "all")
+  end
+
+  defp assign_gender_filter(socket, gender_filter) do
+    socket |> assign(:gender_filter, gender_filter)
+  end
+
   defp assign_products_with_average_ratings(
-         %{assigns: %{age_group_filter: age_group_filter}} = socket
+         %{assigns: %{age_group_filter: age_group_filter, gender_filter: gender_filter}} = socket
        ) do
     socket
     |> assign(
       :products_with_average_rating,
-      get_products_with_average_ratings(%{age_group_filter: age_group_filter})
+      get_products_with_average_ratings(%{
+        age_group_filter: age_group_filter,
+        gender_filter: gender_filter
+      })
     )
   end
 

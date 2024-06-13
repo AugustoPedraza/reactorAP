@@ -25,6 +25,10 @@ defmodule ReactorAp.Catalog.Product.Query do
     |> average_ratings()
   end
 
+  def filter_by_gender(query \\ base(), filter) do
+    apply_gender_filter(query, filter)
+  end
+
   def filter_by_age_group(query \\ base(), filter) do
     query
     |> apply_age_group_filter(filter)
@@ -89,4 +93,10 @@ defmodule ReactorAp.Catalog.Product.Query do
   end
 
   defp apply_age_group_filter(query, _filter), do: query
+
+  defp apply_gender_filter(query, "all"), do: query
+
+  defp apply_gender_filter(query, filter) do
+    query |> where([p, r, u, d], d.gender == ^filter)
+  end
 end
