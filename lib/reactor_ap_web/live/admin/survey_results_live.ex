@@ -49,12 +49,20 @@ defmodule ReactorApWeb.Admin.SurveyResultsLive do
     socket |> assign(:gender_values, @genders)
   end
 
+  defp assign_age_group_filter(%{assigns: %{age_group_filter: age_group_filter}} = socket) do
+    socket |> assign(:age_group_filter, age_group_filter)
+  end
+
   defp assign_age_group_filter(socket) do
     socket |> assign(:age_group_filter, "all")
   end
 
   defp assign_age_group_filter(socket, age_group_filter) do
     socket |> assign(:age_group_filter, age_group_filter)
+  end
+
+  defp assign_gender_filter(%{assigns: %{gender_filter: gender_filter}} = socket) do
+    socket |> assign(:gender_filter, gender_filter)
   end
 
   defp assign_gender_filter(socket) do
