@@ -1,8 +1,8 @@
 defmodule ReactorApWeb.Admin.SurveyResultsLive do
   use ReactorApWeb, :live_component
+  use ReactorApWeb, :chart_live
 
   alias ReactorAp.Catalog
-  alias Contex.Plot
 
   def update(assigns, socket) do
     {:ok,
@@ -64,11 +64,7 @@ defmodule ReactorApWeb.Admin.SurveyResultsLive do
 
   defp assign_chart_svg(%{assigns: %{chart: chart}} = socket) do
     socket
-    |> assign(:chart_svg, render_bar_chart(chart))
-  end
-
-  defp make_bar_chart_dataset(data) do
-    Contex.Dataset.new(data)
+    |> assign(:chart_svg, render_bar_chart(chart, title(), subtitle(), x_axis(), y_axis()))
   end
 
   defp assign_chart(%{assigns: %{dataset: dataset}} = socket) do
@@ -77,17 +73,6 @@ defmodule ReactorApWeb.Admin.SurveyResultsLive do
       :chart,
       make_bar_chart(dataset)
     )
-  end
-
-  defp make_bar_chart(dataset) do
-    Contex.BarChart.new(dataset)
-  end
-
-  defp render_bar_chart(chart) do
-    Plot.new(900, 700, chart)
-    |> Plot.titles(title(), subtitle())
-    |> Plot.axis_labels(x_axis(), y_axis())
-    |> Plot.to_svg()
   end
 
   defp title, do: "Product Ratings"

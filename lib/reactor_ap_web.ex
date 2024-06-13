@@ -79,6 +79,12 @@ defmodule ReactorApWeb do
     end
   end
 
+  def chart_live do
+    quote do
+      unquote(chart_helpers())
+    end
+  end
+
   defp html_helpers do
     quote do
       # HTML escaping functionality
@@ -92,6 +98,12 @@ defmodule ReactorApWeb do
 
       # Routes generation with the ~p sigil
       unquote(verified_routes())
+    end
+  end
+
+  defp chart_helpers do
+    quote do
+      import ReactorApWeb.BarChart
     end
   end
 
