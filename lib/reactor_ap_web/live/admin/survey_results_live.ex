@@ -15,8 +15,22 @@ defmodule ReactorApWeb.Admin.SurveyResultsLive do
      |> assign_chart_svg()}
   end
 
+  def handle_event("age_group_filter", %{"age_group_filter" => age_group_filter}, socket) do
+    {:noreply,
+     socket
+     |> assign_age_group_filter(age_group_filter)
+     |> assign_products_with_average_ratings()
+     |> assign_dataset()
+     |> assign_chart()
+     |> assign_chart_svg()}
+  end
+
   defp assign_age_group_filter(socket) do
     socket |> assign(:age_group_filter, "all")
+  end
+
+  defp assign_age_group_filter(socket, age_group_filter) do
+    socket |> assign(:age_group_filter, age_group_filter)
   end
 
   defp assign_products_with_average_ratings(
@@ -25,8 +39,17 @@ defmodule ReactorApWeb.Admin.SurveyResultsLive do
     socket
     |> assign(
       :products_with_average_rating,
-      Catalog.products_with_average_rating(%{age_group_filter: age_group_filter})
+      get_products_with_average_ratings(%{age_group_filter: age_group_filter})
     )
+  end
+
+  defp get_products_with_average_ratings(filter) do
+    filter
+    |> Catalog.products_with_average_rating()
+    |> case do
+      [] -> Catalog.products_with_zero_rating()
+      products -> products
+    end
   end
 
   defp assign_dataset(

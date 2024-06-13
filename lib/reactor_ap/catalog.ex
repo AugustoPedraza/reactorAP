@@ -35,6 +35,11 @@ defmodule ReactorAp.Catalog do
     |> Repo.all()
   end
 
+  def products_with_zero_rating do
+    Product.Query.products_with_zero_rating()
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single product.
 

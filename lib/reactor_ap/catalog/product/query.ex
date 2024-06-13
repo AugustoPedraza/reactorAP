@@ -45,6 +45,11 @@ defmodule ReactorAp.Catalog.Product.Query do
     |> join(:inner, [p], r in Rating, on: r.product_id == p.id)
   end
 
+  def with_zero_ratings(query \\ base()) do
+    query
+    |> select([p], {p.name, 0})
+  end
+
   defp average_ratings(query) do
     query
     |> group_by([p], p.id)
